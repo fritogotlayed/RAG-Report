@@ -14,6 +14,6 @@ class RegisterForm(Form):
     name = StringField('NickName', [DataRequired()])
     email = StringField('Email Address', [DataRequired(), Email()])
     password = PasswordField('Password', [DataRequired()])
-    confirm = PasswordField('Repeat Password', [DataRequired(), EqualTo('pasword', message='Passwords must match')])
+    confirm = PasswordField('Repeat Password', [DataRequired(), EqualTo('password', message='Passwords must match')])
     accept_tos = BooleanField('I accept the TOS', [DataRequired()])
     recaptcha = RecaptchaField()

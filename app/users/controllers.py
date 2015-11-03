@@ -51,7 +51,7 @@ def register():
     form = RegisterForm(request.form)
     if form.validate_on_submit():
         # Create a user instance
-        user = User(anme=form.name.data, email=form.email.data, password=generate_password_hash(form.password.data))
+        user = User(name=form.name.data, email=form.email.data, password=generate_password_hash(form.password.data))
 
         # Store it in the db
         db.session.add(user)

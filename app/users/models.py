@@ -18,10 +18,10 @@ class User(db.Model):
         self.email = email
         self.password = password
 
-    def getStatus(self):
+    def get_status(self):
         return USER.STATUS[self.status]
 
-    def getRole(selfself):
+    def get_role(self):
         return USER.ROLE[self.role]
 
     def __repr__(self):

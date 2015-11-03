@@ -39,7 +39,7 @@ def not_found(error):
     return render_template('404.html'), 404
 
 # The from/import being here is okay since we do not want __init__ in our packages executing yet.
-from app.users.views import mod as users_module  # noqa: skips the pep8 violation here
+from app.users.controllers import mod as users_module  # noqa: skips the pep8 violation here
 app.register_blueprint(users_module)
 
 db.create_all()
