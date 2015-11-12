@@ -1,3 +1,9 @@
-flask
-flask-sqlalchemy
-flask-wtf
+itsdangerous==0.24
+Werkzeug==0.10.4
+WTForms==2.0.2
+SQLAlchemy==1.0.9
+MarkupSafe==0.23
+Jinja2==2.8
+Flask==0.10.1
+Flask-SQLAlchemy==2.1
+Flask-WTF==0.10
