@@ -63,3 +63,16 @@ def register():
         flash('Thanks for registering')
         return redirect(url_for('users.home'))
     return render_template('users/register.html', form=form)
+
+
+@mod.route('/logout/', methods=['GET', 'POST'])
+def logout():
+    """
+    Logout form
+    """
+    session.pop('user_id', None)
+
+    if request.referrer is None:
+        return redirect(url_for('siteroot.home'))
+
+    return redirect(request.referrer)
