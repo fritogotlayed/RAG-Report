@@ -4,8 +4,10 @@ import sys
 from flask import Flask, render_template
 from flask.ext.sqlalchemy import SQLAlchemy
 
+CONFIG_OBJECT = os.environ.get('RAG_CONFIG', 'config')
+
 app = Flask(__name__)
-app.config.from_object('config')
+app.config.from_object(CONFIG_OBJECT)
 
 db = SQLAlchemy(app)
 
@@ -40,7 +42,7 @@ def not_found(error):
 
 # The from/import being here is okay since we do not want __init__ in our packages executing yet.
 from app.users.controllers import mod as users_module  # noqa: skips the pep8 violation here.
-from app.siteroot.controllers import mod as siteroot_module  # noqa: skips the pep8 violation here.
+from app.siteroot.controller import mod as siteroot_module  # noqa: skips the pep8 violation here.
 app.register_blueprint(users_module)
 app.register_blueprint(siteroot_module)
 
