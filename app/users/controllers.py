@@ -50,18 +50,32 @@ def register():
     """
     form = RegisterForm(request.form)
     if form.validate_on_submit():
-        # Create a user instance
-        user = User(name=form.name.data, email=form.email.data, password=generate_password_hash(form.password.data))
+        # Check if the email they are registering with has already been used
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            # The email is already tied to another user account, error and tell them so
+            flash('This email address already has an account.  Please login with that account or register with a '
+                  'different email address')
 
-        # Store it in the db
-        db.session.add(user)
-        db.session.commit()
+        else:
+            # The email is unique, create new user account
+            # Create a user instance
+            user = User(name=form.name.data, email=form.email.data, password=generate_password_hash(form.password.data))
 
-        # "log" the user in
-        session['user_id'] = user.id
+            # Store it in the db
+            db.session.add(user)
+            db.session.commit()
 
-        flash('Thanks for registering')
-        return redirect(url_for('users.home'))
+            # "log" the user in
+            session['user_id'] = user.id
+
+            # Message the user
+            flash('Thanks for registering')
+
+            # Send the user to their home page
+            return redirect(url_for('users.home'))
+
+    # Send the user back to the account registration page
     return render_template('users/register.html', form=form)
 
 
