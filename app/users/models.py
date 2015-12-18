@@ -1,17 +1,19 @@
-from app import db
+# from app import db
+from app import model_base
+from sqlalchemy import Column, Integer, String, SmallInteger
 from app.users import constants as USER
 __author__ = 'Frito'
 
 
-class User(db.Model):
+class User(model_base.Base):
 
     __tablename__ = 'users_user'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True)
-    email = db.Column(db.String(120), unique=True)
-    password = db.Column(db.String(120))
-    role = db.Column(db.SmallInteger, default=USER.USER)
-    status = db.Column(db.SmallInteger, default=USER.NEW)
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), unique=True)
+    email = Column(String(120), unique=True)
+    password = Column(String(120))
+    role = Column(SmallInteger, default=USER.USER)
+    status = Column(SmallInteger, default=USER.NEW)
 
     def __init__(self, name=None, email=None, password=None):
         self.name = name

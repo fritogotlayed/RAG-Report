@@ -1,10 +1,11 @@
-from app import app
 import unittest
+
+from run import build_app
 
 
 class SiteRootControllerTests(unittest.TestCase):
     def setUp(self):
-        self.app = app.test_client()
+        self.app = build_app().test_client()
 
     def test_home_returns_site_root_when_not_logged_in(self):
         # Arrange

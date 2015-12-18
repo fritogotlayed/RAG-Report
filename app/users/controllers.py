@@ -1,7 +1,8 @@
+from injector import Module, Injector, inject, singleton
 from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for
+from flask.ext.sqlalchemy import SQLAlchemy
 from werkzeug import check_password_hash, generate_password_hash
 
-from app import db
 from app.users.forms import RegisterForm, LoginForm
 from app.users.models import User
 from app.users.decorators import requires_login
@@ -12,13 +13,15 @@ mod = Blueprint('users', __name__, url_prefix='/users')
 
 
 @mod.before_request
-def before_request():
+@inject(db=SQLAlchemy)
+def before_request(db):
     """
     pull user's profile from the database before every request
+    :param db: SQLAlchemy database
     """
     g.user = None
     if 'user_id' in session:
-        g.user = User.query.get(session['user_id'])
+        g.user = db.session.query(User).get(session['user_id'])
 
 
 @mod.route('/me/')
@@ -28,13 +31,15 @@ def home():
 
 
 @mod.route('/login/', methods=['GET', 'POST'])
-def login():
+@inject(db=SQLAlchemy)
+def login(db):
     """
     Login form
+    :param db: SQLAlchemy database
     """
     form = LoginForm(request.form)
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = db.session.query(User).filter(User.email == form.email.data).one()
         if user and check_password_hash(user.password, form.password.data):
             session['user_id'] = user.id
             flash('Welcome %s' % user.name)
@@ -44,14 +49,16 @@ def login():
 
 
 @mod.route('/register/', methods=['GET', 'POST'])
-def register():
+@inject(db=SQLAlchemy)
+def register(db):
     """
     Registration form
+    :param db: SQLAlchemy database
     """
     form = RegisterForm(request.form)
     if form.validate_on_submit():
         # Check if the email they are registering with has already been used
-        user = User.query.filter_by(email=form.email.data).first()
+        user = db.session.query(User).filter(User.email == form.email.data).first()
         if user:
             # The email is already tied to another user account, error and tell them so
             flash('This email address already has an account.  Please login with that account or register with a '
