@@ -43,8 +43,10 @@ def build_app():
     # The from/import being here is okay since we do not want __init__ in our packages executing yet.
     from app.users.controllers import mod as users_module  # noqa: skips the pep8 violation here.
     from app.siteroot.controller import mod as siteroot_module  # noqa: skips the pep8 violation here.
+    from app.RAG.controllers import mod as rag_module  # noqa: skips the pep8 violation here.
     app.register_blueprint(users_module)
     app.register_blueprint(siteroot_module)
+    app.register_blueprint(rag_module)
 
     injector = Injector([ApplicationInitializer(app)])
     FlaskInjector(app=app, injector=injector)
