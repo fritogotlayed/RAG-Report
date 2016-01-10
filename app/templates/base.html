@@ -4,12 +4,18 @@
 
         <link rel="icon" href="/static/img/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="/static/css/bootstrap.css" media="screen">
+        <link rel="stylesheet" href="/static/css/bootstrap-datetimepicker.css" media="screen">
         <link rel="stylesheet" href="/static/css/site.css" media="screen">
+        <link rel="stylesheet" href="/static/css/dataTables.bootstrap.css" media="screen">
         {% block css %} {% endblock %}
 
-        <script src="/static/js/jquery-2.1.4.js" defer></script>
+        <script src="/static/js/jquery.js"></script>
         <script src="/static/js/bootstrap.js" defer></script>
-        <script src="/static/js/npm.js" defer></script>
+        <script src="/static/js/moment-with-locales.js" defer></script>
+        <script src="/static/js/bootstrap-datetimepicker.js" defer></script>
+        <script src="/static/js/jquery.dataTables.js" defer></script>
+        <script src="/static/js/dataTables.bootstrap.js" defer></script>
+        <script src="/static/js/site.js" defer></script>
         {% block script %} {% endblock %}
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -78,5 +84,14 @@
             <!-- /.row -->
             {% block content %}{% endblock %}
         </div>
+    {% block additional_javascript %}{% endblock %}
     </body>
+    <footer>
+        <div class="container">
+            <!--
+            We keep our content off the direct bottom of the page here. This also gives
+            us a nice place to put a footer in the future if we ever decide to.
+            -->
+        </div>
+    </footer>
 </html>

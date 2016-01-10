@@ -1,11 +1,10 @@
-from injector import Module, Injector, inject, singleton
+from app.users.decorators import requires_login
+from app.users.forms import RegisterForm, LoginForm
+from domain.user import User
 from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
+from injector import inject
 from werkzeug.security import check_password_hash, generate_password_hash
-
-from app.users.forms import RegisterForm, LoginForm
-from app.users.models import User
-from app.users.decorators import requires_login
 
 __author__ = 'Frito'
 

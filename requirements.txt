@@ -5,6 +5,6 @@ SQLAlchemy==1.0.9
 MarkupSafe==0.23
 Jinja2==2.8
 Flask==0.10.1
-Flask-Injector=0.6.2
+Flask-Injector==0.6.2
 Flask-SQLAlchemy==2.1
 Flask-WTF==0.10

@@ -1,8 +1,8 @@
-import os
 import sys
 
-from app.model_base import Base
-from flask import Flask, render_template
+import os
+from domain.model_base import Base
+from flask import Flask
 from flask.ext.injector import FlaskInjector
 from flask.ext.sqlalchemy import SQLAlchemy
 from injector import Module, singleton, Injector

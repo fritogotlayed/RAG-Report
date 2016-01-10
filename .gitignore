@@ -61,3 +61,6 @@ target/
 
 # General project stuff
 *.db
+
+# External Tools
+bower_components/

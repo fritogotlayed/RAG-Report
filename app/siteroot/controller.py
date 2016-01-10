@@ -1,8 +1,7 @@
+from domain.user import User
 from flask import Blueprint, render_template, g, session
 from flask.ext.sqlalchemy import SQLAlchemy
-from injector import Module, Injector, inject, singleton
-
-from app.users.models import User
+from injector import inject
 
 __author__ = 'Frito'
 

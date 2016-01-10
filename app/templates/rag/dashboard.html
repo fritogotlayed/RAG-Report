@@ -1,23 +1,110 @@
 {% extends "base.html" %}
 {% block content %}
-    <table class="table table-striped table-bordered">
-    <thead>
-    <tr>
-        <td>Name</td>
-        {% for header in headers %}
-            <td>{{  header }}</td>
-        {% endfor %}
-    </tr>
-    </thead>
-    <tbody>
-    {% for entity in entities %}
-        <tr>
-            <td>{{ entity.name }}</td>
-            {% for metric in entity.metrics %}
-                <td>{{  metric.status }}</td>
-            {% endfor %}
-        </tr>
-    {% endfor %}
-    </tbody>
-    </table>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-header top-margin-small">
+                <h1>RAG Status</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <fieldset>
+                <legend>Report Parameters</legend>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="fromDatePicker" class="control-label">From</label>
+                            <div class="input-group date" name="fromDatePicker" id="fromDatePicker">
+                                <input type="text" class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="toDatePicker" class="control-label">To</label>
+                            <div class="input-group date" name="toDatePicker" id="toDatePicker">
+                                <input type="text" class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-primary pull-right" onclick="ragReport.report.navToFilteredReport();">Apply</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 top-margin-small">
+            <table id="ragReport" class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <td>Name</td>
+                    {% for header in headers %}
+                        <td>{{  header }}</td>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td>{{ entity.name }}</td>
+                        {% for metric in entity.metrics %}
+                            <td>{{  metric.status }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block additional_javascript %}
+    <script type="text/javascript">
+
+    function handle_datePicker_changed(e, queryParamKey){
+        var unix = e.date.unix();
+        // var adjustment = moment().utcOffset() * 60;
+        var adjustment = 0;
+        var val = e.date.unix() + adjustment;
+
+        ragReport.log('Input date: ' + unix + '. Adjustment: ' + adjustment + '. Result: ' + val + '.');
+        ragReport.report.setQueryParameterToUrl(queryParamKey, val)
+    }
+
+    $(document).ready(function() {
+        // Set up the navigation based on what was returned from the web response.
+        ragReport.report.seedNavHelper();
+        ragReport.report.setQueryParameterToUrl(ragReport.report.NAV_HELPER_FROM, '{{ selections.from }}');
+        ragReport.report.setQueryParameterToUrl(ragReport.report.NAV_HELPER_TO, '{{ selections.to }}');
+
+        var fromDatePicker = $('#fromDatePicker');
+        var toDatePicker = $('#toDatePicker');
+        var datePickerOptions = ragReport.defaultOptions.getDatePickerOptions();
+
+        fromDatePicker.datetimepicker(datePickerOptions).data("DateTimePicker").date(moment.unix({{ selections.from }}));
+        toDatePicker.datetimepicker(datePickerOptions).data("DateTimePicker").date(moment.unix({{ selections.to }}));
+
+        fromDatePicker.on('dp.change', function(e){
+            handle_datePicker_changed(e, ragReport.report.NAV_HELPER_FROM);
+        });
+        toDatePicker.on('dp.change', function(e){
+            handle_datePicker_changed(e, ragReport.report.NAV_HELPER_TO);
+        });
+
+
+        var dataTable = $('#ragReport');
+        var dataTableOptions = ragReport.defaultOptions.getDataTableOptions();
+        dataTable.DataTable();
+    });
+    </script>
 {% endblock %}

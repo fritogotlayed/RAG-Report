@@ -1,8 +1,12 @@
-# from app import db
-from app import model_base
-from sqlalchemy import Column, Integer, String, SmallInteger
 from app.users import constants as USER
+from domain import model_base
+from sqlalchemy import Column, Integer, String, SmallInteger
+
 __author__ = 'Frito'
+
+
+def get_user_by_id(session, user_id):
+    return session.query(User).get(user_id)
 
 
 class User(model_base.Base):
