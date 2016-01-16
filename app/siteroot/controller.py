@@ -1,4 +1,6 @@
 from flask import Blueprint, render_template, g, session
+from flask.ext.sqlalchemy import SQLAlchemy
+from injector import Module, Injector, inject, singleton
 
 from app.users.models import User
 
@@ -8,13 +10,14 @@ mod = Blueprint('siteroot', __name__, url_prefix='')
 
 
 @mod.before_request
-def before_request():
+@inject(db=SQLAlchemy)
+def before_request(db):
     """
     pull user's profile from the database before every request
     """
     g.user = None
     if 'user_id' in session:
-        g.user = User.query.get(session['user_id'])
+        g.user = db.session.query(User).get(session['user_id'])
 
 
 @mod.route('/')
