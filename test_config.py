@@ -15,7 +15,7 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 ADMINS = frozenset(['youremail@yourdomain.com'])
 
 # Define the database we are working with
-SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'test.db')
+SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
 DATABASE_CONNECT_OPTIONS = {}
 
 # Application threads. A common general assumption is using 2 per available processor core - to handle incoming
