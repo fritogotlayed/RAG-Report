@@ -39,7 +39,7 @@ def login(db):
     """
     form = LoginForm(request.form)
     if form.validate_on_submit():
-        user = db.session.query(User).filter(User.email == form.email.data).one()
+        user = db.session.query(User).filter(User.email == form.email.data).one_or_none()
         if user and check_password_hash(user.password, form.password.data):
             session['user_id'] = user.id
             flash('Welcome %s' % user.name)
