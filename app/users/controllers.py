@@ -1,7 +1,7 @@
 from injector import Module, Injector, inject, singleton
 from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
-from werkzeug import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.users.forms import RegisterForm, LoginForm
 from app.users.models import User
